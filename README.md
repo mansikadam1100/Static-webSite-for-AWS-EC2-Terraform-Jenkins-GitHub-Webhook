@@ -1,6 +1,6 @@
-# Static-Site-on-AWS-EC2-Terraform-Jenkins-GitHub-Webhook.git
+# Static-webSite-for-AWS-EC2-Terraform-Jenkins-GitHub-Webhook
 
-## 📌 Overview
+##  Overview
 
 This project demonstrates how to deploy a static website on AWS EC2 using Terraform and automate continuous delivery using Jenkins CI/CD pipeline triggered by GitHub Webhooks.
 
@@ -14,23 +14,23 @@ The solution ensures:
 
 * Fully automated updates on every GitHub commit
 
-## 🏗️ Architecture Diagram
+##  Architecture Diagram
 
-![](./Img/Static%20Website%20Deployment%20Flowchart.png)
+![](./Img/static%201.png)
 
-## 🎯 Project Goals
+##  Project Goals
 
 * Deploy a static website using Terraform
 
 * Configure EC2, security groups, and user-data automation
 
-* Setup Jenkins for continuous deployment
+* Set up Jenkins for continuous deployment
 
 * Enable GitHub → Jenkins pipeline trigger
 
 * Auto-update the website after every commit
 
-## 📁 Repository Structure
+##  Repository Structure
 ```
 static-web-deployment-terraform-jenkins/
 │
@@ -48,43 +48,48 @@ static-web-deployment-terraform-jenkins/
 │
 └── README.md
 ```
-## 🛠️ Tools & Technologies
+## (Changes Done)
+
+✔ Terraform files moved under a clean `terraform`/ directory
+✔ Jenkinsfile placed under `jenkins`/
+✔ Website files grouped under `website`/
+✔ Much more production-ready repo layout
+##  Tools & Technologies
 
 | Tool                | Purpose                     |
 | ------------------- | --------------------------- |
 | **Terraform**       | Infrastructure provisioning |
+| **ubuntu**          | operating static website    |
 | **AWS EC2**         | Website hosting             |
+| **ssh key**         | Secure connection between   |    Jenkins and EC2
 | **Nginx**           | Web server                  |
 | **GitHub**          | Source code                 |
 | **Jenkins**         | CI/CD automation            |
 | **GitHub Webhooks** | Auto-trigger pipeline       |
 
-## ⚙️ Terraform Infrastructure
+##  Terraform Infrastructure
 ### ✔ EC2 Instance Setup
-* Ubuntu AMI
+Terraform Infrastructure
+✔ EC2 Instance
+
+* Ubuntu 22.04 LTS AMI
 
 * t2.micro instance
 
-* Allow HTTP (80) + SSH (22)
+### Security Group:
 
-* User Data script installs:
+* Allow Port 80 → Anywhere
 
-     * nginx
+* Allow Port 22 → your IP only (Secure!)
 
+* User Data:
+
+     * Installs: nginx
      * git
+     * Clone repo `/var/www/html`
 
-     * clones repo into `/var/www/html`
+![](./Img/static2.png)  
 
-![](./Img/Github%20repo.png)  
-
-### ✔ Security Group
-```
-Inbound:
-  - 80 → 0.0.0.0/0
-  - 22 → 15.207.111.25
-Outbound:
-  - 0.0.0.0/0
-```
 ### ✔ User Data Script (Auto Deployment)
 ```
 #!/bin/bash
@@ -103,19 +108,30 @@ chmod -R 755 /var/www/html
 
 systemctl restart nginx
 ```
+### Changes Done
 
-### 🔁 Jenkins CI/CD Pipeline
+✔ Corrected GitHub repo URL
+✔ Corrected folder structures
+✔ Standardized permissions
 
-#### Pipeline Stages
-1️⃣ Checkout SCM – Pull latest code from GitHub
+###  Jenkins CI/CD Pipeline
 
-2️⃣ SSH into EC2 – Authenticate using private key
+#### Jenkins CI/CD Pipeline
 
-3️⃣ Deploy Code – Pull changes into /var/www/html
+* 1 Checkout SCM
 
-4️⃣ Restart Nginx – Apply UI updates
+* 2 SSH into EC2
 
-5️⃣ Smoke Test – Validate website
+* 3 Pull latest code
+
+* 4 Replace website content
+
+* 5 Deploy Code 
+
+* 6 Smoke Test 
+
+* 7 Restart nginx 
+
 
 ### Jenkinsfile (Pipeline Script)
 ```python
@@ -126,7 +142,7 @@ pipeline {
         stage('Pull Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/rutikakale/Static-Site-on-AWS-EC2-Terraform-Jenkins-GitHub-Webhook.git'
+                    url: 'https://github.com/mansikadam1100/Static-webSite-for-AWS-EC2-Terraform-Jenkins-GitHub-Webhook'
             }
         }
 
@@ -145,9 +161,10 @@ pipeline {
 }
 ```
 
-### 🚀 Deployment Steps
+###  Deployment Steps
 #### 1️⃣ Deploy Infrastructure (Terraform)
 ```
+cd terraform
 terraform init
 terraform plan
 terraform apply -auto-approve
@@ -155,64 +172,64 @@ terraform apply -auto-approve
 #### 2️⃣ Setup Jenkins
 * Install Jenkins + plugins
 
-* Create pipeline
+* Create pipeline job
+
+* add ssh key credential -> deploy-ssh-key
 
 * Add SSH private key
 
-* Configure GitHub Webhook:
-https://15.207.111.25/github-webhook/
-![](./Img/webhook%20trigger.png)
+* set GitHub Webhook
+
+http://12.476.876.72/github-webhook/
+![](./Img/static4.png)
 
 #### 3️⃣ Auto Deployment
-* Developer commits → GitHub
+* Developer pushes code 
 
-* Webhook triggers Jenkins
+*  Github Webhook triggers Jenkins
 
 * Jenkins deploys changes to EC2
 
 * Nginx restarts
 
-* Website instantly updates 🎉
+* Website instantly updates
 
-### 🔍 Validation
+###  Validation Checklist
 
 * Website loads through EC2 Public IP
 
-* Jenkins pipeline completes successfully
+* Jenkins pipeline runs successfully
 
-* Nginx serves updated content
+* `/var/www/html` contains latest code
 
-* GitHub commits reflect live within seconds
+* GitHub commit instantly reflects on server 
 
-### 📸 Screenshots (Evidence)
+###  Screenshots (Evidence)
 
 -**Successful static website deployment** on AWS EC2
 
-![](./Img/ec2%20instance.png)
+![](./Img/static3.png)
 ---
 -**Fully automated CI/CD pipeline** using Jenkins
 
 ![](./Img/Cicd%20pipeline%20success.png)
 ---
 
-![](./Img/webhook%20trigger.png)
+![](./Img/static4.png)
 ---
+###  Final Results
 
-- **Infrastructure-as-Code** implementation with Terraform
-
-![](./Img/terraform%20apply%20success.png)
----
-### ✅ Final Results
-
-* Static website successfully deployed on AWS EC2
+* Static website deployed successfully
 
 * Fully automated CI/CD pipeline
 
-* Zero manual deployments
+* Terraform → Jenkins → GitHub integration working
 
-* Fast rollout (9–10 seconds per deploy)
+* Cleaner repo structure
 
-* GitHub → Jenkins → EC2 automation works flawlessly
+* Secure deployment
+
+* Zero manual steps required
 
 This project delivers a complete DevOps automation pipeline using Terraform + Jenkins, ensuring reliable, repeatable, and fully automated website deployments.
 
