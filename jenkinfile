@@ -5,7 +5,7 @@ pipeline {
         stage('Pull Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/mansikadam1100/Static-webSite-for-AWS-EC2-Terraform-Jenkins-GitHub-Webhook..git'
+                    url: 'https://github.com/mansikadam1100/Static-webSite-for-AWS-EC2-Terraform-Jenkins-GitHub-Webhook.git'
             }
         }
 
