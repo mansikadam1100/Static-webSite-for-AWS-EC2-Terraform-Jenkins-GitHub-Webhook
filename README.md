@@ -152,7 +152,7 @@ pipeline {
                 sshagent(['ubuntu']) {
                     sh '''
                     ssh -o StrictHostKeyChecking=no ec2-user@15.207.111.25 "sudo rm -rf /var/www/html/*"
-                    ssh ec2-user@15.207.111.25 "sudo git clone https://github.com/rutikakale/Static-Site-on-AWS-EC2-Terraform-Jenkins-GitHub-Webhook.git /var/www/html"
+                    ssh ec2-user@15.207.111.25 "sudo git clone mansikadam1100/Static-webSite-for-AWS-EC2-Terraform-Jenkins-GitHub-Webhook. /var/www/html"
                     ssh ec2-user@15.207.111.25 "sudo systemctl restart nginx"
                     '''
                 }
